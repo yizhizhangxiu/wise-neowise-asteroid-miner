@@ -1,0 +1,81 @@
+# Reference configuration for WISE/NEOWISE Asteroid Miner.
+# Only [target].designation is required. See docs/CONFIGURATION.md for details.
+
+[target]
+designation = "2026 JR7"
+# Optional overrides. Remove H/G to let the pipeline query MPC.
+H = 18.64
+G = 0.15
+
+[search]
+# Optional IRSA MOST time bounds. Empty obs_end means no explicit upper bound.
+obs_begin = "2010 01 01 00:00:00"
+obs_end = ""
+# W3/W4 are thermal bands by default; W1/W2 are retained as diagnostics.
+bands = [3, 4, 2, 1]
+min_qual_frame = 5
+# A gap larger than this starts a new epoch within a band.
+epoch_gap_days = 30.0
+# Safety guard only. 0 means unlimited; a positive value raises if exceeded.
+max_frames = 0
+
+[photometry]
+cutout_size_pix = 180
+# Same-frame random apertures used to estimate the empirical background/null.
+controls_per_frame = 80
+control_exclusion_arcsec = 30.0
+bootstrap_n = 10000
+# Keep fixed for reproducible control placement and bootstrap sampling.
+random_seed = 20260913
+# Useful for deep diagnostics, but can substantially increase output size.
+save_control_samples = false
+
+[contamination]
+# AllWISE static-source checks apply to W3/W4 frames.
+enabled = true
+veto_radius_arcsec = 12.0
+min_catalog_snr = 2.0
+exclude_contaminated_thermal_frames = true
+
+[detection]
+# Formal screening thresholds. Changing these changes the decision rule.
+min_frames_candidate = 5
+min_frames_strong = 8
+candidate_p = 0.05
+strong_p = 0.01
+candidate_snr = 2.0
+strong_snr = 3.0
+
+# Multiple-testing correction is applied separately within each WISE band.
+use_bh_fdr = true
+candidate_q = 0.05
+strong_q = 0.01
+
+thermal_bands = [3, 4]
+# Repeatability must occur in the same band.
+repeat_min_epochs = 2
+# Diagnostic warning only; this is not a hard candidate veto.
+min_effective_n_warning = 3.0
+
+# Independent validation-priority layer. It never changes formal status.
+followup_enabled = true
+followup_bands = [3, 4]
+followup_min_epochs = 2
+followup_epoch_p_max = 0.25
+followup_combined_p_max = 0.10
+followup_positive_fraction_min = 0.55
+followup_jackknife_positive_fraction_min = 0.80
+followup_min_effective_n = 3.0
+
+[thermal]
+enabled = true
+eta_grid = [0.8, 1.0, 1.2, 1.4]
+emissivity = 0.90
+w3_calibration_fraction = 0.05
+# Used by NEATM only if H cannot be obtained/provided.
+assumed_pv_if_H_missing = 0.10
+max_diameter_km = 50.0
+
+[output]
+root = "results"
+make_plots = true
