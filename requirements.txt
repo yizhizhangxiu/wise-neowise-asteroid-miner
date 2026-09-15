@@ -1,0 +1,5 @@
+requests>=2.31
+numpy>=1.26
+astropy>=6.0
+scipy>=1.11
+matplotlib>=3.8
