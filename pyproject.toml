@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wise-neowise-asteroid-miner"
+dynamic = ["version"]
+description = "Conservative archival WISE/NEOWISE screening and forced photometry for MPC asteroids."
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.31",
+    "numpy>=1.26",
+    "astropy>=6.0",
+    "scipy>=1.11",
+    "matplotlib>=3.8",
+]
+keywords = [
+    "astronomy",
+    "asteroid",
+    "WISE",
+    "NEOWISE",
+    "forced-photometry",
+    "NEATM",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+
+[project.scripts]
+wise-neowise-miner = "wise_miner.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["wise_miner*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "wise_miner.__version__"}
