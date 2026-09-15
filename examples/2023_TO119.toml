@@ -1,0 +1,68 @@
+[target]
+designation = "2023 TO119"
+# Optional: remove H and G to let the pipeline query MPC.
+H = 18.59
+G = 0.15
+
+[search]
+obs_begin = "2010 01 01 00:00:00"
+obs_end = ""
+bands = [3, 4, 2, 1]
+min_qual_frame = 5
+epoch_gap_days = 30.0
+max_frames = 0
+
+[photometry]
+cutout_size_pix = 180
+controls_per_frame = 80
+control_exclusion_arcsec = 30.0
+bootstrap_n = 10000
+random_seed = 20260913
+save_control_samples = false
+
+[contamination]
+enabled = true
+veto_radius_arcsec = 12.0
+min_catalog_snr = 2.0
+exclude_contaminated_thermal_frames = true
+
+[detection]
+min_frames_candidate = 5
+min_frames_strong = 8
+
+candidate_p = 0.05
+strong_p = 0.01
+candidate_snr = 2.0
+strong_snr = 3.0
+
+use_bh_fdr = true
+candidate_q = 0.05
+strong_q = 0.01
+
+thermal_bands = [3, 4]
+repeat_min_epochs = 2
+
+# Diagnostic warning only; not a hard candidate gate.
+min_effective_n_warning = 3.0
+
+# Follow-up/coherence layer; does not change formal detection status.
+followup_enabled = true
+followup_bands = [3, 4]
+followup_min_epochs = 2
+followup_epoch_p_max = 0.25
+followup_combined_p_max = 0.10
+followup_positive_fraction_min = 0.55
+followup_jackknife_positive_fraction_min = 0.80
+followup_min_effective_n = 3.0
+
+[thermal]
+enabled = true
+eta_grid = [0.8, 1.0, 1.2, 1.4]
+emissivity = 0.90
+w3_calibration_fraction = 0.05
+assumed_pv_if_H_missing = 0.10
+max_diameter_km = 50.0
+
+[output]
+root = "results"
+make_plots = true
